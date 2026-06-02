@@ -1,0 +1,24 @@
+{
+  "package": "magnificabench_chapter2_codex_context",
+  "created_date": "2026-06-02",
+  "source_url": "https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20260515-magnifica-humanitas.html#CHAPTER_TWO_",
+  "source_scope": "Magnifica Humanitas, Chapter 2, paragraphs 46-89",
+  "purpose": "Public context package for implementing a Chapter 2 MagnificaBench benchmark slice.",
+  "files": [
+    ".gitignore",
+    "00_CODEX_GOAL.md",
+    "01_chapter2_logic_brief.md",
+    "02_principle_matrix.md",
+    "03_magnificabench_chapter2_spec.md",
+    "04_rubric.yaml",
+    "05_ontology.json",
+    "06_seed_dataset.jsonl",
+    "07_visual_logic_map.mmd",
+    "07_visual_logic_map.svg",
+    "08_10min_update_outline.md",
+    "09_expected_codex_output_tree.md",
+    "README.md",
+    "chapter2_slide_outline.md",
+    "scripts/validate_package.py"
+  ]
+}

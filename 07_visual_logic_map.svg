@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1100" viewBox="0 0 1400 1100">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#333" />
+    </marker>
+    <style>
+      .box { fill: #f7f7f7; stroke: #333; stroke-width: 1.5; rx: 12; }
+      .side { fill: #ffffff; stroke: #777; stroke-width: 1.2; stroke-dasharray: 5 4; rx: 10; }
+      .title { font-family: Arial, sans-serif; font-size: 30px; font-weight: 700; fill: #111; }
+      .text { font-family: Arial, sans-serif; font-size: 18px; fill: #111; }
+      .small { font-family: Arial, sans-serif; font-size: 15px; fill: #222; }
+      .para { font-family: Arial, sans-serif; font-size: 13px; fill: #555; }
+      .arrow { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .double { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrow); marker-start: url(#arrow); }
+    </style>
+  </defs>
+  <text x="700" y="45" text-anchor="middle" class="title">Chapter 2 Logic Map for MagnificaBench</text>
+  <text x="700" y="75" text-anchor="middle" class="small">Dignity → Rights → Common Good → Digital Governance → Justice → Integral Human Development</text>
+
+  <rect x="470" y="105" width="460" height="72" class="box"/><text x="700" y="132" text-anchor="middle" class="text">Human Person / Image of God</text><text x="700" y="157" text-anchor="middle" class="small">relational, created for communion</text><text x="700" y="172" text-anchor="middle" class="para">MH §§48–50</text>
+  <line x1="700" y1="177" x2="700" y2="220" class="arrow"/>
+
+  <rect x="470" y="220" width="460" height="82" class="box"/><text x="700" y="248" text-anchor="middle" class="text">Inherent / Ontological Dignity</text><text x="700" y="273" text-anchor="middle" class="small">not earned by efficiency, output, wealth, or status</text><text x="700" y="290" text-anchor="middle" class="para">MH §§51–53</text>
+  <line x1="700" y1="302" x2="700" y2="345" class="arrow"/>
+
+  <rect x="470" y="345" width="460" height="82" class="box"/><text x="700" y="373" text-anchor="middle" class="text">Human Rights</text><text x="700" y="398" text-anchor="middle" class="small">concrete protection, not formal words only</text><text x="700" y="415" text-anchor="middle" class="para">MH §§54–58</text>
+  <line x1="700" y1="427" x2="700" y2="470" class="arrow"/>
+
+  <rect x="470" y="470" width="460" height="88" class="box"/><text x="700" y="498" text-anchor="middle" class="text">Common Good</text><text x="700" y="523" text-anchor="middle" class="small">social expression of dignity; not aggregate preference</text><text x="700" y="542" text-anchor="middle" class="para">MH §§59–64</text>
+  <line x1="700" y1="558" x2="480" y2="620" class="arrow"/>
+  <line x1="700" y1="558" x2="920" y2="620" class="arrow"/>
+
+  <rect x="170" y="620" width="470" height="98" class="box"/><text x="405" y="650" text-anchor="middle" class="text">Universal Destination of Goods</text><text x="405" y="675" text-anchor="middle" class="small">property has a social function</text><text x="405" y="697" text-anchor="middle" class="small">digital goods: patents, algorithms, platforms, infrastructure, data</text><text x="405" y="713" text-anchor="middle" class="para">MH §§65–67</text>
+
+  <rect x="760" y="620" width="470" height="98" class="box"/><text x="995" y="650" text-anchor="middle" class="text">Subsidiarity ↔ Solidarity</text><text x="995" y="675" text-anchor="middle" class="small">participation + responsibility</text><text x="995" y="697" text-anchor="middle" class="small">transparency, checks, data access, recourse</text><text x="995" y="713" text-anchor="middle" class="para">MH §§68–76</text>
+  <line x1="640" y1="669" x2="760" y2="669" class="double"/>
+
+  <line x1="405" y1="718" x2="620" y2="790" class="arrow"/>
+  <line x1="995" y1="718" x2="780" y2="790" class="arrow"/>
+  <rect x="470" y="790" width="460" height="92" class="box"/><text x="700" y="820" text-anchor="middle" class="text">Social Justice</text><text x="700" y="845" text-anchor="middle" class="small">structural + restorative; protects the weakest</text><text x="700" y="867" text-anchor="middle" class="small">digital: access, surveillance, opaque algorithms, misinformation</text><text x="700" y="878" text-anchor="middle" class="para">MH §§77–81</text>
+  <line x1="700" y1="882" x2="700" y2="925" class="arrow"/>
+
+  <rect x="470" y="925" width="460" height="86" class="box"/><text x="700" y="954" text-anchor="middle" class="text">Integral Human Development</text><text x="700" y="979" text-anchor="middle" class="small">humane, fraternal, ecological, intergenerational</text><text x="700" y="997" text-anchor="middle" class="para">MH §§82–85</text>
+  <line x1="930" y1="968" x2="1090" y2="968" class="arrow"/>
+
+  <rect x="1090" y="910" width="265" height="116" class="side"/><text x="1222" y="940" text-anchor="middle" class="text">Final AI Test</text><text x="1222" y="966" text-anchor="middle" class="small">Does it help persons</text><text x="1222" y="987" text-anchor="middle" class="small">and peoples become</text><text x="1222" y="1008" text-anchor="middle" class="small">more humane + fraternal?</text>
+
+  <rect x="45" y="910" width="300" height="126" class="side"/><text x="195" y="940" text-anchor="middle" class="text">Institutional Examen</text><text x="195" y="966" text-anchor="middle" class="small">transparency • accountability</text><text x="195" y="987" text-anchor="middle" class="small">evaluation • participation</text><text x="195" y="1008" text-anchor="middle" class="small">reparation • service</text><text x="195" y="1025" text-anchor="middle" class="para">MH §§86–89</text>
+  <line x1="470" y1="968" x2="345" y2="968" class="arrow"/>
+</svg>

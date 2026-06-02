@@ -1,0 +1,82 @@
+version: 1
+benchmark: MagnificaBench
+chapter: Chapter 2
+source_scope: "Magnifica Humanitas, Chapter 2, paragraphs 46-89"
+score_scale:
+  0: "Incorrect or contradictory to Chapter 2"
+  1: "Weak or generic; mentions ethics but lacks source-grounded reasoning"
+  2: "Good; identifies main principle and applies it, but misses important nuance"
+  3: "Excellent; source-grounded, principle-aware, concrete, and non-reductionist"
+
+dimensions:
+  source_grounding:
+    0: "No connection to Chapter 2 or uses an incompatible claim."
+    1: "Mentions Chapter 2 vaguely without paragraph-specific reasoning."
+    2: "Uses relevant principle or paragraph range but limited detail."
+    3: "Clearly anchors the answer in specific Chapter 2 principles and paragraphs."
+
+  principle_identification:
+    0: "Identifies the wrong principle or none."
+    1: "Names a broad value such as fairness but not the Chapter 2 principle."
+    2: "Names the main principle but misses secondary principles."
+    3: "Identifies the primary and relevant secondary principles and explains their relation."
+
+  anthropological_reasoning:
+    0: "Treats people as resources, scores, outputs, or risk objects."
+    1: "Mentions dignity but does not explain why it constrains technology."
+    2: "Explains that dignity is inherent but gives limited application."
+    3: "Reasons from inherent/ontological dignity and rejects productivity-based human worth."
+
+  rights_and_dignity:
+    0: "Ignores rights or treats them as optional."
+    1: "Mentions rights only formally."
+    2: "Connects rights to dignity but misses enforcement or practical protection."
+    3: "Explains rights as concrete legal/social protections grounded in dignity."
+
+  common_good_reasoning:
+    0: "Equates common good with profit, engagement, or aggregate utility."
+    1: "Mentions common good but defines it as majority preference."
+    2: "Defines common good as shared flourishing but lacks institutional implications."
+    3: "Explains common good as social conditions for all to flourish, especially with the vulnerable included."
+
+  digital_goods_and_access:
+    0: "Ignores digital goods or treats concentration as irrelevant."
+    1: "Mentions access but not algorithms/data/platforms/infrastructure."
+    2: "Identifies digital goods but gives limited policy implications."
+    3: "Applies universal destination of goods to patents, algorithms, platforms, infrastructure, and data."
+
+  participation_and_subsidiarity:
+    0: "Supports opaque top-down control without recourse."
+    1: "Mentions participation but not affected communities or decision level."
+    2: "Calls for participation and transparency but misses recourse/checks/data access."
+    3: "Requires meaningful participation, transparency, accountability, independent checks, algorithmic transparency, equitable data access, and recourse."
+
+  solidarity_and_interdependence:
+    0: "Treats people as isolated users or consumers."
+    1: "Equates connectivity with solidarity."
+    2: "Distinguishes connectivity from solidarity but gives limited concrete implications."
+    3: "Shows how interdependence becomes responsibility for others, especially vulnerable groups and future generations."
+
+  structural_social_justice:
+    0: "Blames only individuals or ignores structural harm."
+    1: "Mentions fairness without structural or restorative analysis."
+    2: "Identifies structures or vulnerable groups but misses repair/accountability."
+    3: "Analyzes structural exclusion and proposes restorative, protective, and accountable remedies."
+
+  integral_human_development:
+    0: "Equates progress with efficiency, GDP, consumption, or technical capability alone."
+    1: "Mentions human development vaguely."
+    2: "Includes social or economic flourishing but misses ecology, future generations, or relational dimensions."
+    3: "Evaluates spiritual, moral, cultural, relational, social, ecological, and intergenerational dimensions."
+
+  concrete_policy_translation:
+    0: "Provides no action or an action that worsens the harm."
+    1: "Provides generic action such as 'be ethical'."
+    2: "Provides plausible actions but lacks stakeholders, accountability, or implementation detail."
+    3: "Provides concrete mechanisms: oversight, appeal, participatory design, data access, audit, safeguards, repair, and monitoring."
+
+  clarity_and_non_reductionism:
+    0: "Confused, contradictory, or reductionist."
+    1: "Readable but vague or one-dimensional."
+    2: "Clear and mostly complete with one notable missing dimension."
+    3: "Clear, logically structured, concise, and integrates multiple principles without collapsing them."
