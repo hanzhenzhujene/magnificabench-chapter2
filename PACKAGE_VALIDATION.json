@@ -15,6 +15,10 @@
     "README.md",
     "chapter2_slide_outline.md",
     "manifest.json",
+    "presentation/README.md",
+    "presentation/5min_oral_script.md",
+    "presentation/magnificabench_chapter2_5min_presentation.pptx",
+    "presentation/magnificabench_chapter2_5min_preview.png",
     "scripts/validate_package.py"
   ],
   "seed_dataset_items": 40,
@@ -22,5 +26,6 @@
   "ontology_edges": 22,
   "rubric_dimensions": 12,
   "readme_visualized": true,
+  "five_minute_presentation": true,
   "status": "public github-ready context package"
 }

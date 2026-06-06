@@ -5,10 +5,9 @@ from __future__ import annotations
 
 import json
 import re
+import zipfile
 from collections import Counter
 from pathlib import Path
-
-import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,6 +28,10 @@ EXPECTED_FILES = [
     "README.md",
     "chapter2_slide_outline.md",
     "manifest.json",
+    "presentation/README.md",
+    "presentation/5min_oral_script.md",
+    "presentation/magnificabench_chapter2_5min_presentation.pptx",
+    "presentation/magnificabench_chapter2_5min_preview.png",
     "scripts/validate_package.py",
 ]
 
@@ -161,13 +164,30 @@ def validate_ontology() -> None:
 
 
 def validate_rubric() -> None:
-    rubric = yaml.safe_load((ROOT / "04_rubric.yaml").read_text())
-    dims = rubric.get("dimensions", {})
+    text = (ROOT / "04_rubric.yaml").read_text()
+    dims: dict[str, set[int]] = {}
+    current_dim: str | None = None
+    in_dimensions = False
+    for line in text.splitlines():
+        if line.strip() == "dimensions:":
+            in_dimensions = True
+            continue
+        if not in_dimensions:
+            continue
+        dim_match = re.fullmatch(r"  ([a-z_]+):\s*", line)
+        if dim_match:
+            current_dim = dim_match.group(1)
+            dims[current_dim] = set()
+            continue
+        level_match = re.fullmatch(r"    ([0-3]):\s+.+", line)
+        if current_dim and level_match:
+            dims[current_dim].add(int(level_match.group(1)))
+
     missing = REQUIRED_RUBRIC_DIMS - set(dims)
     if missing:
         fail(f"rubric missing dimensions: {sorted(missing)}")
     for dim, levels in dims.items():
-        if set(levels) != {0, 1, 2, 3}:
+        if levels != {0, 1, 2, 3}:
             fail(f"rubric dimension {dim} does not define levels 0-3")
 
 
@@ -177,6 +197,30 @@ def validate_readme_visuals() -> None:
         fail("README does not embed the rendered visual map")
     if "```mermaid" not in readme:
         fail("README does not include a GitHub-rendered Mermaid diagram")
+    if "presentation/magnificabench_chapter2_5min_preview.png" not in readme:
+        fail("README does not include the five-minute presentation preview")
+
+
+def validate_presentation() -> None:
+    deck = ROOT / "presentation/magnificabench_chapter2_5min_presentation.pptx"
+    script = ROOT / "presentation/5min_oral_script.md"
+    preview = ROOT / "presentation/magnificabench_chapter2_5min_preview.png"
+    if deck.stat().st_size <= 20_000:
+        fail("presentation deck is missing or unexpectedly small")
+    if preview.stat().st_size <= 20_000:
+        fail("presentation preview is missing or unexpectedly small")
+    with zipfile.ZipFile(deck) as pptx:
+        slides = [
+            name
+            for name in pptx.namelist()
+            if re.fullmatch(r"ppt/slides/slide\d+\.xml", name)
+        ]
+    if len(slides) != 5:
+        fail(f"presentation deck should contain 5 slides, found {len(slides)}")
+    script_text = script.read_text()
+    for marker in ("0:00-0:50", "0:50-1:50", "1:50-2:55", "2:55-4:05", "4:05-5:00"):
+        if marker not in script_text:
+            fail(f"oral script missing timing marker {marker}")
 
 
 def validate_public_hygiene() -> None:
@@ -204,9 +248,10 @@ def main() -> None:
     validate_ontology()
     validate_rubric()
     validate_readme_visuals()
+    validate_presentation()
     validate_public_hygiene()
     print("OK: package validates")
-    print("OK: 40 JSONL items, 21 ontology nodes, 12 rubric dimensions")
+    print("OK: 40 JSONL items, 21 ontology nodes, 12 rubric dimensions, 5-slide presentation")
 
 
 if __name__ == "__main__":

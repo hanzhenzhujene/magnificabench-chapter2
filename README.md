@@ -22,7 +22,18 @@ This repository is built to help a researcher or coding agent implement new benc
 | [`07_visual_logic_map.mmd`](07_visual_logic_map.mmd) / [`07_visual_logic_map.svg`](07_visual_logic_map.svg) | Mermaid source and rendered visual map. |
 | [`08_10min_update_outline.md`](08_10min_update_outline.md) | Speaking outline for a 10-15 minute team update. |
 | [`chapter2_slide_outline.md`](chapter2_slide_outline.md) | Optional slide skeleton. |
+| [`presentation/`](presentation/) | Five-minute editable PowerPoint deck, oral script, and static slide preview. |
 | [`scripts/validate_package.py`](scripts/validate_package.py) | Local package validation script. |
+
+## Five-Minute Presentation
+
+For a quick team introduction, use the five-minute presentation package:
+
+- [`presentation/magnificabench_chapter2_5min_presentation.pptx`](presentation/magnificabench_chapter2_5min_presentation.pptx) - editable 5-slide deck.
+- [`presentation/5min_oral_script.md`](presentation/5min_oral_script.md) - timed oral script.
+- [`presentation/magnificabench_chapter2_5min_preview.png`](presentation/magnificabench_chapter2_5min_preview.png) - static slide preview.
+
+![Five-minute slide preview](presentation/magnificabench_chapter2_5min_preview.png)
 
 ## Core Logic
 
