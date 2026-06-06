@@ -29,9 +29,9 @@ EXPECTED_FILES = [
     "chapter2_slide_outline.md",
     "manifest.json",
     "presentation/README.md",
-    "presentation/5min_oral_script.md",
-    "presentation/magnificabench_chapter2_5min_presentation.pptx",
-    "presentation/magnificabench_chapter2_5min_preview.png",
+    "presentation/8min_oral_script.md",
+    "presentation/magnificabench_chapter2_8min_presentation.pptx",
+    "presentation/magnificabench_chapter2_8min_preview.png",
     "scripts/validate_package.py",
 ]
 
@@ -197,14 +197,14 @@ def validate_readme_visuals() -> None:
         fail("README does not embed the rendered visual map")
     if "```mermaid" not in readme:
         fail("README does not include a GitHub-rendered Mermaid diagram")
-    if "presentation/magnificabench_chapter2_5min_preview.png" not in readme:
-        fail("README does not include the five-minute presentation preview")
+    if "presentation/magnificabench_chapter2_8min_preview.png" not in readme:
+        fail("README does not include the eight-minute presentation preview")
 
 
 def validate_presentation() -> None:
-    deck = ROOT / "presentation/magnificabench_chapter2_5min_presentation.pptx"
-    script = ROOT / "presentation/5min_oral_script.md"
-    preview = ROOT / "presentation/magnificabench_chapter2_5min_preview.png"
+    deck = ROOT / "presentation/magnificabench_chapter2_8min_presentation.pptx"
+    script = ROOT / "presentation/8min_oral_script.md"
+    preview = ROOT / "presentation/magnificabench_chapter2_8min_preview.png"
     if deck.stat().st_size <= 20_000:
         fail("presentation deck is missing or unexpectedly small")
     if preview.stat().st_size <= 20_000:
@@ -215,10 +215,19 @@ def validate_presentation() -> None:
             for name in pptx.namelist()
             if re.fullmatch(r"ppt/slides/slide\d+\.xml", name)
         ]
-    if len(slides) != 5:
-        fail(f"presentation deck should contain 5 slides, found {len(slides)}")
+    if len(slides) != 8:
+        fail(f"presentation deck should contain 8 slides, found {len(slides)}")
     script_text = script.read_text()
-    for marker in ("0:00-0:50", "0:50-1:50", "1:50-2:55", "2:55-4:05", "4:05-5:00"):
+    for marker in (
+        "0:00-0:55",
+        "0:55-1:50",
+        "1:50-3:10",
+        "3:10-4:15",
+        "4:15-5:15",
+        "5:15-6:25",
+        "6:25-7:20",
+        "7:20-8:00",
+    ):
         if marker not in script_text:
             fail(f"oral script missing timing marker {marker}")
 
@@ -251,7 +260,7 @@ def main() -> None:
     validate_presentation()
     validate_public_hygiene()
     print("OK: package validates")
-    print("OK: 40 JSONL items, 21 ontology nodes, 12 rubric dimensions, 5-slide presentation")
+    print("OK: 40 JSONL items, 21 ontology nodes, 12 rubric dimensions, 8-slide presentation")
 
 
 if __name__ == "__main__":
