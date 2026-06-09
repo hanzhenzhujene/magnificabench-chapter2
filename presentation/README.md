@@ -14,15 +14,15 @@ This folder contains an expanded presentation package for introducing the runnab
 
 ## Talk Arc
 
-1. Chapter 2 is an implementable benchmark architecture.
-2. Generic AI ethics language fails when it has no source-to-score path.
-3. The visual logic map is easier to read as five layers: foundation, social order, governance, justice test, and final criterion.
-4. Four digital pivots make the chapter directly testable.
-5. A new dimension follows a repeatable source-to-behavior-to-rubric workflow.
-6. A seed item shows the scenario-to-principle-to-remedy-to-score pattern.
-7. The repository is an extension kit for future benchmark dimensions.
-8. The practical takeaway is inspect, extend, validate, then benchmark.
+1. The package is now a runnable benchmark, not only a readable context bundle.
+2. The missing layer was execution: runner, judge, outputs, tests, and runbooks.
+3. The benchmark still rests on a five-layer Chapter 2 logic map.
+4. Every item follows a source-to-score execution path.
+5. A one-command smoke run proves the package works after download.
+6. Scoring has three tiers: heuristic smoke, LLM judge, and calibration.
+7. A new dimension is complete only when it validates and runs.
+8. The practical handoff is inspect, run, judge, extend.
 
 ## Presenter Note
 
-The script is written for approximately eight minutes. If the audience already knows MagnificaBench, shorten Slide 1 and spend the saved time on Slide 5's dimension-extension workflow.
+The script is written for approximately eight minutes. If the audience already knows MagnificaBench, shorten Slide 3 and spend the saved time on Slide 6's judge/calibration workflow.
