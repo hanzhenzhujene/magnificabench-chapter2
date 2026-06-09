@@ -7,5 +7,7 @@ __pycache__/
 .ruff_cache/
 dist/
 build/
+*.egg-info/
 outputs/
+runs/
 .presentation_workspace_path

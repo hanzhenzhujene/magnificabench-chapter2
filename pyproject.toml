@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "magnificabench-chapter2"
+version = "0.2.0"
+description = "Runnable MagnificaBench Chapter 2 benchmark slice with dataset, rubric, CLI, and LLM judge workflows."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Research artifact; see repository public use notes." }
+authors = [
+  { name = "MagnificaBench Chapter 2 contributors" }
+]
+dependencies = []
+
+[project.scripts]
+magnificabench-ch2 = "magnificabench_chapter2.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["magnificabench_chapter2*"]

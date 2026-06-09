@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Validate the public MagnificaBench Chapter 2 context package."""
+"""Validate the public MagnificaBench Chapter 2 runnable benchmark package."""
 
 from __future__ import annotations
 
 import json
 import re
+import subprocess
+import sys
+import tempfile
 import zipfile
 from collections import Counter
 from pathlib import Path
@@ -13,6 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 EXPECTED_FILES = [
+    ".gitignore",
     "00_CODEX_GOAL.md",
     "01_chapter2_logic_brief.md",
     "02_principle_matrix.md",
@@ -24,15 +28,37 @@ EXPECTED_FILES = [
     "07_visual_logic_map.svg",
     "08_10min_update_outline.md",
     "09_expected_codex_output_tree.md",
+    ".env.example",
+    "Makefile",
     "PACKAGE_VALIDATION.json",
     "README.md",
     "chapter2_slide_outline.md",
+    "configs/judge_prompt.md",
+    "configs/model_backends.example.json",
+    "configs/scoring_plan.json",
+    "docs/EXTENDING_DIMENSIONS.md",
+    "docs/LLM_JUDGES.md",
+    "docs/OUTPUT_SCHEMAS.md",
+    "docs/RESEARCHER_READINESS_AUDIT.md",
+    "docs/RUN_BENCHMARK.md",
+    "examples/predictions/README.md",
+    "examples/predictions/demo_mixed.jsonl",
+    "magnificabench_chapter2/__init__.py",
+    "magnificabench_chapter2/__main__.py",
+    "magnificabench_chapter2/cli.py",
+    "magnificabench_chapter2/data.py",
+    "magnificabench_chapter2/judge.py",
+    "magnificabench_chapter2/llm_clients.py",
+    "magnificabench_chapter2/scoring.py",
     "manifest.json",
     "presentation/README.md",
     "presentation/8min_oral_script.md",
     "presentation/magnificabench_chapter2_8min_presentation.pptx",
     "presentation/magnificabench_chapter2_8min_preview.png",
+    "pyproject.toml",
+    "requirements.txt",
     "scripts/validate_package.py",
+    "tests/test_cli_smoke.py",
 ]
 
 REQUIRED_ITEM_FIELDS = {
@@ -105,15 +131,14 @@ REQUIRED_RUBRIC_DIMS = {
     "clarity_and_non_reductionism",
 }
 
-SECRET_TERMS = [
-    r"api[_-]?" r"key",
-    r"secret[_-]?(key|token)",
-    r"pass" r"word",
-    r"cred" r"ential",
-    r"--" r"---BEGIN",
-    r"s" r"k-[A-Za-z0-9]",
-]
-SECRET_PATTERN = re.compile("(" + "|".join(SECRET_TERMS) + ")", re.IGNORECASE)
+SECRET_PATTERN = re.compile(
+    r"("
+    r"-----" r"BEGIN (?:RSA |OPENSSH |PRIVATE )?PRIVATE KEY-----"
+    r"|sk-[A-Za-z0-9]{20,}"
+    r"|gh[pousr]_[A-Za-z0-9_]{20,}"
+    r"|(?i:(?:api[_-]?key|secret|password|credential)\s*[:=]\s*[\"']?[A-Za-z0-9_\-]{12,})"
+    r")"
+)
 
 
 def fail(message: str) -> None:
@@ -232,15 +257,65 @@ def validate_presentation() -> None:
             fail(f"oral script missing timing marker {marker}")
 
 
+def validate_example_predictions() -> None:
+    item_ids = {json.loads(line)["id"] for line in (ROOT / "06_seed_dataset.jsonl").read_text().splitlines()}
+    for line_number, line in enumerate((ROOT / "examples/predictions/demo_mixed.jsonl").read_text().splitlines(), 1):
+        row = json.loads(line)
+        if row.get("id") not in item_ids:
+            fail(f"example prediction row {line_number} references unknown id {row.get('id')}")
+        if not row.get("answer"):
+            fail(f"example prediction row {line_number} has empty answer")
+
+
+def run_command(args: list[str]) -> str:
+    result = subprocess.run(
+        args,
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        fail(f"command failed: {' '.join(args)}\nSTDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}")
+    return result.stdout
+
+
+def validate_runnable_cli() -> None:
+    validate_output = run_command([sys.executable, "-m", "magnificabench_chapter2", "validate"])
+    if "OK: runnable benchmark artifacts validate" not in validate_output:
+        fail("CLI validate did not report runnable benchmark success")
+    with tempfile.TemporaryDirectory() as tmp:
+        out_dir = Path(tmp) / "smoke"
+        run_command(
+            [
+                sys.executable,
+                "-m",
+                "magnificabench_chapter2",
+                "run",
+                "--answer-provider",
+                "demo",
+                "--judge",
+                "heuristic",
+                "--limit",
+                "3",
+                "--out-dir",
+                str(out_dir),
+            ]
+        )
+        for path in ("predictions.jsonl", "scores.jsonl", "summary.json"):
+            if not (out_dir / path).exists():
+                fail(f"CLI smoke run did not create {path}")
+        summary = json.loads((out_dir / "summary.json").read_text())
+        if summary.get("count") != 3:
+            fail(f"CLI smoke run summary expected 3 rows, found {summary.get('count')}")
+
+
 def validate_public_hygiene() -> None:
+    text_suffixes = {".md", ".json", ".jsonl", ".yaml", ".py", ".toml", ".txt", ".example"}
     checked = [
-        "README.md",
-        "03_magnificabench_chapter2_spec.md",
-        "04_rubric.yaml",
-        "05_ontology.json",
-        "06_seed_dataset.jsonl",
-        "manifest.json",
-        "PACKAGE_VALIDATION.json",
+        path
+        for path in EXPECTED_FILES
+        if Path(path).suffix in text_suffixes or Path(path).name in {"Makefile", ".gitignore"}
     ]
     matches = []
     for path in checked:
@@ -258,9 +333,12 @@ def main() -> None:
     validate_rubric()
     validate_readme_visuals()
     validate_presentation()
+    validate_example_predictions()
+    validate_runnable_cli()
     validate_public_hygiene()
     print("OK: package validates")
     print("OK: 40 JSONL items, 21 ontology nodes, 12 rubric dimensions, 8-slide presentation")
+    print("OK: runnable CLI smoke run, example predictions, and researcher docs validate")
 
 
 if __name__ == "__main__":

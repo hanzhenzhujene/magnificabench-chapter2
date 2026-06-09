@@ -1,0 +1,24 @@
+{
+  "scoring_mode": "auto",
+  "global_dimensions": [
+    "source_grounding",
+    "principle_identification",
+    "concrete_policy_translation",
+    "clarity_and_non_reductionism"
+  ],
+  "principle_to_dimension_examples": {
+    "ontological_dignity": "anthropological_reasoning",
+    "human_rights": "rights_and_dignity",
+    "common_good": "common_good_reasoning",
+    "digital_goods": "digital_goods_and_access",
+    "digital_subsidiarity": "participation_and_subsidiarity",
+    "digital_solidarity": "solidarity_and_interdependence",
+    "digital_social_justice": "structural_social_justice",
+    "integral_human_development": "integral_human_development"
+  },
+  "notes": [
+    "The CLI always scores the global dimensions plus dimensions inferred from each item's principles.",
+    "Use --dimensions all when you want every rubric dimension scored for every item.",
+    "The heuristic judge is a smoke-test scorer. Research results should use a human review pass or an LLM judge with calibration."
+  ]
+}

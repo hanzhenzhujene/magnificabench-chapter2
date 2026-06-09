@@ -1,0 +1,67 @@
+{
+  "answer_backends": [
+    {
+      "name": "demo",
+      "provider": "demo",
+      "model": "demo-model",
+      "requires_api_key": false,
+      "use": "Local deterministic smoke run."
+    },
+    {
+      "name": "openai",
+      "provider": "openai",
+      "model": "YOUR_OPENAI_MODEL",
+      "requires_api_key": true,
+      "env": ["OPENAI_API_KEY", "OPENAI_BASE_URL"]
+    },
+    {
+      "name": "anthropic",
+      "provider": "anthropic",
+      "model": "YOUR_ANTHROPIC_MODEL",
+      "requires_api_key": true,
+      "env": ["ANTHROPIC_API_KEY", "ANTHROPIC_BASE_URL"]
+    },
+    {
+      "name": "ollama-local",
+      "provider": "ollama",
+      "model": "llama3.1",
+      "requires_api_key": false,
+      "env": ["OLLAMA_BASE_URL"]
+    },
+    {
+      "name": "openai-compatible-local",
+      "provider": "openai-compatible",
+      "model": "local-model-name",
+      "requires_api_key": false,
+      "env": ["OPENAI_COMPATIBLE_BASE_URL", "OPENAI_COMPATIBLE_API_KEY"]
+    }
+  ],
+  "judge_backends": [
+    {
+      "name": "heuristic-smoke",
+      "judge": "heuristic",
+      "use": "Fast local smoke scoring only."
+    },
+    {
+      "name": "openai-judge",
+      "judge": "llm",
+      "judge_provider": "openai",
+      "judge_model": "YOUR_OPENAI_JUDGE_MODEL",
+      "requires_api_key": true
+    },
+    {
+      "name": "anthropic-judge",
+      "judge": "llm",
+      "judge_provider": "anthropic",
+      "judge_model": "YOUR_ANTHROPIC_JUDGE_MODEL",
+      "requires_api_key": true
+    },
+    {
+      "name": "ollama-judge",
+      "judge": "llm",
+      "judge_provider": "ollama",
+      "judge_model": "llama3.1",
+      "requires_api_key": false
+    }
+  ]
+}

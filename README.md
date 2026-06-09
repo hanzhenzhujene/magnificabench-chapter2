@@ -1,39 +1,50 @@
-# MagnificaBench Chapter 2 Context Package
+# MagnificaBench Chapter 2 Runnable Benchmark
 
-Public, source-grounded context package for turning Chapter 2 of *Magnifica Humanitas* into a MagnificaBench benchmark slice.
+Runnable, source-grounded benchmark slice for evaluating whether language models can reason from Chapter 2 of *Magnifica Humanitas* in concrete AI and digital-governance scenarios.
 
-This repository is built to help a researcher or coding agent implement new benchmark dimensions directly from the included specification, rubric, ontology, seed dataset, and presentation materials.
+This repository is no longer only a context package. A researcher can clone it, validate the artifacts, generate model answers, score those answers with a local smoke scorer or an LLM judge, and inspect aggregate results.
 
 <p align="center">
   <img src="07_visual_logic_map.svg" alt="Chapter 2 logic map from dignity to AI evaluation and institutional credibility" width="820">
 </p>
 
-## At A Glance
+## Quickstart
 
-| Artifact | Purpose |
-|---|---|
-| [`00_CODEX_GOAL.md`](00_CODEX_GOAL.md) | Full generation brief for a polished Chapter 2 deliverable. |
-| [`01_chapter2_logic_brief.md`](01_chapter2_logic_brief.md) | Source-grounded conceptual flow from dignity to integral human development. |
-| [`02_principle_matrix.md`](02_principle_matrix.md) | Principle-by-principle map from Chapter 2 to benchmark behavior. |
-| [`03_magnificabench_chapter2_spec.md`](03_magnificabench_chapter2_spec.md) | Main implementation contract for benchmark categories, dimensions, schemas, and extension workflow. |
-| [`04_rubric.yaml`](04_rubric.yaml) | Reusable 0-3 scoring rubric with 12 dimensions. |
-| [`05_ontology.json`](05_ontology.json) | Machine-readable concept graph with nodes and edges. |
-| [`06_seed_dataset.jsonl`](06_seed_dataset.jsonl) | 40 seed benchmark items across six task categories. |
-| [`07_visual_logic_map.mmd`](07_visual_logic_map.mmd) / [`07_visual_logic_map.svg`](07_visual_logic_map.svg) | Mermaid source and rendered visual map. |
-| [`08_10min_update_outline.md`](08_10min_update_outline.md) | Speaking outline for a 10-15 minute team update. |
-| [`chapter2_slide_outline.md`](chapter2_slide_outline.md) | Optional slide skeleton. |
-| [`presentation/`](presentation/) | Expanded eight-minute editable PowerPoint deck, oral script, and static slide preview. |
-| [`scripts/validate_package.py`](scripts/validate_package.py) | Local package validation script. |
+```bash
+git clone https://github.com/hanzhenzhujene/magnificabench-chapter2-codex-context.git
+cd magnificabench-chapter2-codex-context
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -e .
 
-## Eight-Minute Presentation
+python3 scripts/validate_package.py
+python3 -m magnificabench_chapter2 validate
+python3 -m magnificabench_chapter2 run --answer-provider demo --judge heuristic --limit 5 --out-dir runs/smoke
+```
 
-For a clear team introduction with a more intuitive logic map, use the expanded eight-minute presentation package:
+Expected smoke outputs:
 
-- [`presentation/magnificabench_chapter2_8min_presentation.pptx`](presentation/magnificabench_chapter2_8min_presentation.pptx) - editable 8-slide deck.
-- [`presentation/8min_oral_script.md`](presentation/8min_oral_script.md) - timed oral script.
-- [`presentation/magnificabench_chapter2_8min_preview.png`](presentation/magnificabench_chapter2_8min_preview.png) - static slide preview.
+```text
+runs/smoke/predictions.jsonl
+runs/smoke/scores.jsonl
+runs/smoke/summary.json
+```
 
-![Eight-minute slide preview](presentation/magnificabench_chapter2_8min_preview.png)
+The built-in `demo` answer backend and `heuristic` scorer require no API keys. They are for smoke testing only. Research claims should use a calibrated LLM judge or human review.
+
+## What This Benchmark Tests
+
+The benchmark asks whether model answers can move from Chapter 2 source logic to observable AI-governance judgment:
+
+```text
+source paragraph -> principle -> answer behavior -> concrete remedy -> 0-3 score
+```
+
+The north-star question is:
+
+```text
+Does the AI or digital system help persons and peoples become more humane and fraternal while respecting the common home and future generations?
+```
 
 ## Core Logic
 
@@ -56,9 +67,26 @@ flowchart TD
     N --> O["Institutional examen and credibility"]
 ```
 
-## Dataset Snapshot
+## Repository Map
 
-The seed dataset contains 40 valid JSONL items:
+| Path | Purpose |
+|---|---|
+| `06_seed_dataset.jsonl` | 40 benchmark items across six task categories. |
+| `04_rubric.yaml` | Reusable 0-3 rubric with 12 dimensions. |
+| `05_ontology.json` | Machine-readable concept graph with 21 nodes and 22 edges. |
+| `magnificabench_chapter2/` | Runnable CLI, data loading, scoring, LLM client, and judge code. |
+| `configs/` | Scoring plan, judge prompt notes, and model backend examples. |
+| `examples/predictions/` | Example prediction JSONL that can be scored immediately. |
+| `docs/RUN_BENCHMARK.md` | End-to-end runbook. |
+| `docs/LLM_JUDGES.md` | LLM-as-judge setup, provider options, and calibration protocol. |
+| `docs/OUTPUT_SCHEMAS.md` | Dataset, prediction, score, and summary schemas. |
+| `docs/EXTENDING_DIMENSIONS.md` | Checklist for adding new runnable benchmark dimensions. |
+| `docs/RESEARCHER_READINESS_AUDIT.md` | What was missing and what runnable components now exist. |
+| `presentation/` | Editable 8-slide PPTX, oral script, and slide preview. |
+| `scripts/validate_package.py` | Public package validation gate. |
+| `tests/` | CLI smoke tests. |
+
+## Dataset Snapshot
 
 | Category | Count |
 |---|---:|
@@ -69,39 +97,88 @@ The seed dataset contains 40 valid JSONL items:
 | Critique / diagnose weak answer | 4 |
 | Synthesis / visual explanation | 2 |
 
-Every item includes paragraph references, principles, an ideal answer, item-level scoring guidance, and difficulty.
+Every item includes paragraph references, principles, a prompt, an ideal answer, item-level scoring guidance, and difficulty.
+
+## Common Commands
+
+Validate:
+
+```bash
+make validate
+```
+
+Export prompts for another model runner:
+
+```bash
+python3 -m magnificabench_chapter2 export-prompts --out runs/prompts.jsonl
+```
+
+Generate answers with a live model:
+
+```bash
+export OPENAI_API_KEY="..."
+python3 -m magnificabench_chapter2 answer \
+  --provider openai \
+  --model YOUR_OPENAI_MODEL \
+  --out runs/openai_predictions.jsonl
+```
+
+Score existing predictions locally:
+
+```bash
+python3 -m magnificabench_chapter2 score \
+  --predictions examples/predictions/demo_mixed.jsonl \
+  --out runs/example_scores.jsonl \
+  --summary runs/example_summary.json
+```
+
+Score with an LLM judge:
+
+```bash
+python3 -m magnificabench_chapter2 score \
+  --predictions runs/openai_predictions.jsonl \
+  --judge llm \
+  --judge-provider openai \
+  --judge-model YOUR_JUDGE_MODEL \
+  --out runs/openai_judged_scores.jsonl \
+  --summary runs/openai_judged_summary.json
+```
+
+Run tests:
+
+```bash
+make test
+```
+
+## Supported LLM Backends
+
+The CLI supports:
+
+- `demo`: deterministic local smoke backend;
+- `openai`: OpenAI chat-completions compatible endpoint;
+- `anthropic`: Anthropic Messages API;
+- `ollama`: local Ollama chat endpoint;
+- `openai-compatible`: local or hosted compatible endpoints such as vLLM or LM Studio.
+
+See `docs/LLM_JUDGES.md` and `configs/model_backends.example.json`.
 
 ## Implementing New Dimensions
 
-Start with [`03_magnificabench_chapter2_spec.md`](03_magnificabench_chapter2_spec.md). It defines:
+Start with `03_magnificabench_chapter2_spec.md` and `docs/EXTENDING_DIMENSIONS.md`.
 
-- the dimension implementation contract;
-- the existing dimension registry;
-- the workflow for adding a new dimension;
-- ontology and rubric templates;
-- JSONL item schema and allowed values;
-- a worked example for `worker_participation_in_ai_deployment`;
-- validation checks before release.
+The practical rule:
 
-The most important rule: every new dimension must connect a Chapter 2 source claim to observable model-answer behavior, 0-3 scoring criteria, and concrete benchmark items.
-
-## Validate The Package
-
-Run:
-
-```bash
-python3 scripts/validate_package.py
+```text
+No new dimension is complete until it has source paragraphs, ontology/rubric alignment, JSONL items, validation coverage, and a smoke-scored run.
 ```
 
-The validator checks:
+## Presentation
 
-- all expected artifacts exist;
-- the JSONL dataset has 40 valid rows;
-- every row has required fields and paragraph references in 46-89;
-- the ontology has required nodes and edges;
-- the rubric has the required 12 dimensions and levels 0-3;
-- README visual assets are present;
-- no obvious secret-like strings are present in public-facing files.
+- `presentation/magnificabench_chapter2_8min_presentation.pptx` - editable 8-slide deck.
+- `presentation/8min_oral_script.md` - timed oral script.
+- `presentation/magnificabench_chapter2_8min_preview.png` - static slide preview.
+
+![Eight-minute slide preview](presentation/magnificabench_chapter2_8min_preview.png)
 
 ## Source Scope
 
@@ -113,6 +190,7 @@ This package avoids long source quotations and uses paragraph references such as
 
 ## Public Use Notes
 
-- This is a context and implementation package, not a final benchmark release.
-- The seed items are designed to be extended and converted into a fuller benchmark module.
+- This is a runnable Chapter 2 benchmark slice, not a full MagnificaBench release.
+- The heuristic scorer is a smoke-test mechanism, not a final research metric.
+- Published results should report answer model, judge model, provider, item count, scoring dimensions, and calibration or human-review procedure.
 - The materials are analytical and benchmark-oriented; they should not be treated as official theological commentary.

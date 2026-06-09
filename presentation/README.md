@@ -1,6 +1,6 @@
 # Expanded Eight-Minute Presentation
 
-This folder contains an expanded presentation package for introducing the MagnificaBench Chapter 2 context package to research collaborators.
+This folder contains an expanded presentation package for introducing the runnable MagnificaBench Chapter 2 benchmark package to research collaborators.
 
 ## Files
 

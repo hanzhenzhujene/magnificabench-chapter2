@@ -1,5 +1,6 @@
 {
   "generated_files": [
+    ".env.example",
     ".gitignore",
     "00_CODEX_GOAL.md",
     "01_chapter2_logic_brief.md",
@@ -12,14 +13,36 @@
     "07_visual_logic_map.svg",
     "08_10min_update_outline.md",
     "09_expected_codex_output_tree.md",
+    "Makefile",
+    "PACKAGE_VALIDATION.json",
     "README.md",
     "chapter2_slide_outline.md",
+    "configs/judge_prompt.md",
+    "configs/model_backends.example.json",
+    "configs/scoring_plan.json",
+    "docs/EXTENDING_DIMENSIONS.md",
+    "docs/LLM_JUDGES.md",
+    "docs/OUTPUT_SCHEMAS.md",
+    "docs/RESEARCHER_READINESS_AUDIT.md",
+    "docs/RUN_BENCHMARK.md",
+    "examples/predictions/README.md",
+    "examples/predictions/demo_mixed.jsonl",
+    "magnificabench_chapter2/__init__.py",
+    "magnificabench_chapter2/__main__.py",
+    "magnificabench_chapter2/cli.py",
+    "magnificabench_chapter2/data.py",
+    "magnificabench_chapter2/judge.py",
+    "magnificabench_chapter2/llm_clients.py",
+    "magnificabench_chapter2/scoring.py",
     "manifest.json",
-    "presentation/README.md",
     "presentation/8min_oral_script.md",
+    "presentation/README.md",
     "presentation/magnificabench_chapter2_8min_presentation.pptx",
     "presentation/magnificabench_chapter2_8min_preview.png",
-    "scripts/validate_package.py"
+    "pyproject.toml",
+    "requirements.txt",
+    "scripts/validate_package.py",
+    "tests/test_cli_smoke.py"
   ],
   "seed_dataset_items": 40,
   "ontology_nodes": 21,
@@ -27,5 +50,15 @@
   "rubric_dimensions": 12,
   "readme_visualized": true,
   "eight_minute_presentation": true,
-  "status": "public github-ready context package"
+  "runnable_benchmark": true,
+  "cli_entrypoint": "python3 -m magnificabench_chapter2",
+  "smoke_run_command": "python3 -m magnificabench_chapter2 run --answer-provider demo --judge heuristic --limit 5 --out-dir runs/smoke",
+  "llm_judge_supported": true,
+  "supported_live_providers": [
+    "openai",
+    "anthropic",
+    "ollama",
+    "openai-compatible"
+  ],
+  "status": "public github-ready runnable benchmark slice"
 }
