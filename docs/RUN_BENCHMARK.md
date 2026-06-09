@@ -5,11 +5,11 @@ This repo is now runnable as a small benchmark package. A researcher can clone i
 ## 1. Setup
 
 ```bash
-git clone https://github.com/hanzhenzhujene/magnificabench-chapter2-codex-context.git
-cd magnificabench-chapter2-codex-context
+git clone https://github.com/hanzhenzhujene/magnificabench-chapter2.git
+cd magnificabench-chapter2
 python3 -m venv .venv
 source .venv/bin/activate
-python3 -m pip install -e .
+python3 -m pip install .
 ```
 
 No package dependencies are required beyond Python 3.10+.
@@ -49,6 +49,8 @@ runs/smoke/summary.json
 ```
 
 The heuristic scorer is not a research-grade judge. It exists so the package can be run immediately after download.
+
+The input for `run` is the bundled dataset file `06_seed_dataset.jsonl`. Each row contains an item ID, prompt, source paragraph references, principles, ideal answer, scoring rubric, and difficulty. The command first generates `predictions.jsonl`, then scores that file into `scores.jsonl` and `summary.json`.
 
 ## 4. Export Prompts For An External Model
 

@@ -56,6 +56,17 @@ class CliSmokeTests(unittest.TestCase):
             self.assertTrue(scores.exists())
             self.assertTrue(summary.exists())
 
+    def test_packaged_resources_match_source_artifacts(self) -> None:
+        for filename in ("04_rubric.yaml", "05_ontology.json", "06_seed_dataset.jsonl"):
+            source = ROOT / filename
+            packaged = ROOT / "magnificabench_chapter2" / "resources" / filename
+            self.assertTrue(packaged.exists(), filename)
+            self.assertEqual(
+                source.read_text(encoding="utf-8"),
+                packaged.read_text(encoding="utf-8"),
+                filename,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

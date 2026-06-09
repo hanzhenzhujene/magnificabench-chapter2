@@ -3,8 +3,15 @@
 The repository should remain downloadable and directly runnable:
 
 ```text
-magnificabench-chapter2-codex-context/
+magnificabench-chapter2/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 ├── README.md
+├── LICENSE
+├── CITATION.cff
+├── CHANGELOG.md
+├── MANIFEST.in
 ├── pyproject.toml
 ├── requirements.txt
 ├── Makefile
@@ -38,6 +45,10 @@ magnificabench-chapter2-codex-context/
 │   ├── data.py
 │   ├── judge.py
 │   ├── llm_clients.py
+│   ├── resources/
+│   │   ├── 04_rubric.yaml
+│   │   ├── 05_ontology.json
+│   │   └── 06_seed_dataset.jsonl
 │   └── scoring.py
 ├── presentation/
 │   ├── 8min_oral_script.md
@@ -58,6 +69,7 @@ magnificabench-chapter2-codex-context/
 - `05_ontology.json` has all required nodes and at least 22 edges.
 - `04_rubric.yaml` has all required rubric dimensions and levels 0-3.
 - The CLI can validate artifacts with `python3 -m magnificabench_chapter2 validate`.
+- The installed package can validate artifacts outside the source checkout.
 - The CLI can run a local smoke benchmark with `python3 -m magnificabench_chapter2 run --answer-provider demo --judge heuristic --limit 5 --out-dir runs/smoke`.
 - Example prediction JSONL can be scored.
 - LLM judge documentation explains OpenAI, Anthropic, Ollama, and OpenAI-compatible workflows.

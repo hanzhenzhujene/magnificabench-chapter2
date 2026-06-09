@@ -1,8 +1,10 @@
 # MagnificaBench Chapter 2 Runnable Benchmark
 
+[![CI](https://github.com/hanzhenzhujene/magnificabench-chapter2/actions/workflows/ci.yml/badge.svg)](https://github.com/hanzhenzhujene/magnificabench-chapter2/actions/workflows/ci.yml)
+
 Runnable, source-grounded benchmark slice for evaluating whether language models can reason from Chapter 2 of *Magnifica Humanitas* in concrete AI and digital-governance scenarios.
 
-This repository is no longer only a context package. A researcher can clone it, validate the artifacts, generate model answers, score those answers with a local smoke scorer or an LLM judge, and inspect aggregate results.
+A researcher can clone the repository, install the package, validate the artifacts, generate model answers, score those answers with a local smoke scorer or an LLM judge, and inspect aggregate results.
 
 <p align="center">
   <img src="07_visual_logic_map.svg" alt="Chapter 2 logic map from dignity to AI evaluation and institutional credibility" width="820">
@@ -11,11 +13,11 @@ This repository is no longer only a context package. A researcher can clone it, 
 ## Quickstart
 
 ```bash
-git clone https://github.com/hanzhenzhujene/magnificabench-chapter2-codex-context.git
-cd magnificabench-chapter2-codex-context
+git clone https://github.com/hanzhenzhujene/magnificabench-chapter2.git
+cd magnificabench-chapter2
 python3 -m venv .venv
 source .venv/bin/activate
-python3 -m pip install -e .
+python3 -m pip install .
 
 python3 scripts/validate_package.py
 python3 -m magnificabench_chapter2 validate
@@ -31,6 +33,8 @@ runs/smoke/summary.json
 ```
 
 The built-in `demo` answer backend and `heuristic` scorer require no API keys. They are for smoke testing only. Research claims should use a calibrated LLM judge or human review.
+
+The `run` command reads the bundled benchmark items from `06_seed_dataset.jsonl`, writes model answers to `predictions.jsonl`, and then writes scored rows plus an aggregate summary. If you already have model answers from another runner, skip `run` and use `score --predictions`.
 
 ## What This Benchmark Tests
 
@@ -71,10 +75,14 @@ flowchart TD
 
 | Path | Purpose |
 |---|---|
+| `LICENSE` | Research-artifact license terms. |
+| `CITATION.cff` | Citation metadata for GitHub and citation managers. |
+| `CHANGELOG.md` | Versioned release notes. |
+| `.github/workflows/ci.yml` | GitHub Actions validation for Python 3.10-3.13. |
 | `06_seed_dataset.jsonl` | 40 benchmark items across six task categories. |
 | `04_rubric.yaml` | Reusable 0-3 rubric with 12 dimensions. |
 | `05_ontology.json` | Machine-readable concept graph with 21 nodes and 22 edges. |
-| `magnificabench_chapter2/` | Runnable CLI, data loading, scoring, LLM client, and judge code. |
+| `magnificabench_chapter2/` | Runnable CLI, package resources, data loading, scoring, LLM client, and judge code. |
 | `configs/` | Scoring plan, judge prompt notes, and model backend examples. |
 | `examples/predictions/` | Example prediction JSONL that can be scored immediately. |
 | `docs/RUN_BENCHMARK.md` | End-to-end runbook. |
@@ -148,6 +156,12 @@ Run tests:
 
 ```bash
 make test
+```
+
+Check that the package also runs after a normal install outside the source checkout:
+
+```bash
+make install-smoke
 ```
 
 ## Supported LLM Backends

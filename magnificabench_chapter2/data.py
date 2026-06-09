@@ -8,11 +8,18 @@ from pathlib import Path
 from typing import Any
 
 
+PACKAGE_ROOT = Path(__file__).resolve().parent
+RESOURCE_ROOT = PACKAGE_ROOT / "resources"
+
+
 def repo_root() -> Path:
     override = os.environ.get("MAGNIFICABENCH_CH2_ROOT")
     if override:
         return Path(override).expanduser().resolve()
-    return Path(__file__).resolve().parents[1]
+    source_root = Path(__file__).resolve().parents[1]
+    if (source_root / "06_seed_dataset.jsonl").exists():
+        return source_root
+    return RESOURCE_ROOT
 
 
 ROOT = repo_root()

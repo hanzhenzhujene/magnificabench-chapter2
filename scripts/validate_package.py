@@ -16,6 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 EXPECTED_FILES = [
+    ".github/workflows/ci.yml",
     ".gitignore",
     "00_CODEX_GOAL.md",
     "01_chapter2_logic_brief.md",
@@ -29,6 +30,10 @@ EXPECTED_FILES = [
     "08_10min_update_outline.md",
     "09_expected_codex_output_tree.md",
     ".env.example",
+    "CHANGELOG.md",
+    "CITATION.cff",
+    "LICENSE",
+    "MANIFEST.in",
     "Makefile",
     "PACKAGE_VALIDATION.json",
     "README.md",
@@ -49,6 +54,9 @@ EXPECTED_FILES = [
     "magnificabench_chapter2/data.py",
     "magnificabench_chapter2/judge.py",
     "magnificabench_chapter2/llm_clients.py",
+    "magnificabench_chapter2/resources/04_rubric.yaml",
+    "magnificabench_chapter2/resources/05_ontology.json",
+    "magnificabench_chapter2/resources/06_seed_dataset.jsonl",
     "magnificabench_chapter2/scoring.py",
     "manifest.json",
     "presentation/README.md",
@@ -149,6 +157,45 @@ def validate_files() -> None:
     missing = [path for path in EXPECTED_FILES if not (ROOT / path).exists()]
     if missing:
         fail(f"missing expected files: {missing}")
+
+
+def validate_package_metadata() -> None:
+    expected_repo_url = "https://github.com/hanzhenzhujene/magnificabench-chapter2"
+    readme = (ROOT / "README.md").read_text()
+    runbook = (ROOT / "docs/RUN_BENCHMARK.md").read_text()
+    pyproject = (ROOT / "pyproject.toml").read_text()
+    manifest = json.loads((ROOT / "manifest.json").read_text())
+    citation = (ROOT / "CITATION.cff").read_text()
+    stale_values = [
+        "magnificabench-chapter2-codex-context",
+        "magnificabench_chapter2_codex_context",
+    ]
+    for value in stale_values:
+        if value in readme or value in runbook or value in pyproject or value in citation:
+            fail(f"stale package/repo name remains in public metadata: {value}")
+    for text_name, text in {
+        "README.md": readme,
+        "docs/RUN_BENCHMARK.md": runbook,
+        "pyproject.toml": pyproject,
+        "CITATION.cff": citation,
+    }.items():
+        if expected_repo_url not in text:
+            fail(f"{text_name} does not reference {expected_repo_url}")
+    if manifest.get("package") != "magnificabench_chapter2":
+        fail(f"manifest package name is stale: {manifest.get('package')}")
+    if manifest.get("repository_url") != expected_repo_url:
+        fail(f"manifest repository_url is not {expected_repo_url}")
+
+
+def validate_packaged_resources() -> None:
+    pairs = [
+        ("04_rubric.yaml", "magnificabench_chapter2/resources/04_rubric.yaml"),
+        ("05_ontology.json", "magnificabench_chapter2/resources/05_ontology.json"),
+        ("06_seed_dataset.jsonl", "magnificabench_chapter2/resources/06_seed_dataset.jsonl"),
+    ]
+    for source, packaged in pairs:
+        if (ROOT / source).read_text(encoding="utf-8") != (ROOT / packaged).read_text(encoding="utf-8"):
+            fail(f"packaged resource does not match source artifact: {packaged}")
 
 
 def validate_dataset() -> None:
@@ -311,11 +358,11 @@ def validate_runnable_cli() -> None:
 
 
 def validate_public_hygiene() -> None:
-    text_suffixes = {".md", ".json", ".jsonl", ".yaml", ".py", ".toml", ".txt", ".example"}
+    text_suffixes = {".cff", ".md", ".json", ".jsonl", ".yaml", ".yml", ".py", ".toml", ".txt", ".example"}
     checked = [
         path
         for path in EXPECTED_FILES
-        if Path(path).suffix in text_suffixes or Path(path).name in {"Makefile", ".gitignore"}
+        if Path(path).suffix in text_suffixes or Path(path).name in {"LICENSE", "Makefile", ".gitignore"}
     ]
     matches = []
     for path in checked:
@@ -328,6 +375,8 @@ def validate_public_hygiene() -> None:
 
 def main() -> None:
     validate_files()
+    validate_package_metadata()
+    validate_packaged_resources()
     validate_dataset()
     validate_ontology()
     validate_rubric()
@@ -338,7 +387,7 @@ def main() -> None:
     validate_public_hygiene()
     print("OK: package validates")
     print("OK: 40 JSONL items, 21 ontology nodes, 12 rubric dimensions, 8-slide presentation")
-    print("OK: runnable CLI smoke run, example predictions, and researcher docs validate")
+    print("OK: runnable CLI smoke run, package resources, example predictions, and researcher docs validate")
 
 
 if __name__ == "__main__":

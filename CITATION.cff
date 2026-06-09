@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this benchmark slice, please cite the repository."
+title: "MagnificaBench Chapter 2"
+type: software
+version: "0.2.1"
+date-released: "2026-06-09"
+authors:
+  - name: "MagnificaBench Chapter 2 contributors"
+repository-code: "https://github.com/hanzhenzhujene/magnificabench-chapter2"
+url: "https://github.com/hanzhenzhujene/magnificabench-chapter2"
+abstract: "Runnable Chapter 2 benchmark slice for evaluating source-grounded LLM reasoning in AI and digital-governance scenarios."
+keywords:
+  - llm-evaluation
+  - benchmark
+  - ai-governance
+  - dataset
+  - magnificabench

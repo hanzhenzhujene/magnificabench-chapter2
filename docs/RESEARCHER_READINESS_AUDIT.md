@@ -17,12 +17,15 @@ The repository originally had strong conceptual artifacts but lacked direct-run 
 - no example predictions;
 - no backend configuration examples;
 - no tests for end-to-end execution;
-- no runbook explaining how to evaluate different LLMs.
+- no runbook explaining how to evaluate different LLMs;
+- no installed-package resource fallback for non-editable installs;
+- no release metadata for citation, license, or continuous validation.
 
 ## Added Runnable Components
 
-- `pyproject.toml`: editable install and CLI entry point.
+- `pyproject.toml`: installable package metadata and CLI entry point.
 - `magnificabench_chapter2/`: data loading, validation, scoring, LLM clients, judge prompt construction, and CLI.
+- `magnificabench_chapter2/resources/`: packaged copies of the dataset, ontology, and rubric for installed-package runs outside a source checkout.
 - `configs/`: scoring plan, model backend examples, and judge prompt notes.
 - `examples/predictions/`: sample prediction JSONL and format guide.
 - `docs/RUN_BENCHMARK.md`: end-to-end runbook.
@@ -31,6 +34,8 @@ The repository originally had strong conceptual artifacts but lacked direct-run 
 - `docs/EXTENDING_DIMENSIONS.md`: implementation checklist for new dimensions.
 - `tests/`: smoke tests for validation, run, and score commands.
 - `Makefile`: short validation, smoke, and test commands.
+- `.github/workflows/ci.yml`: validation across supported Python versions.
+- `LICENSE`, `CITATION.cff`, and `CHANGELOG.md`: public repository metadata.
 
 ## Current Scope
 
